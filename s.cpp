@@ -41,11 +41,13 @@ bool Sop(string expression) {
 			return false;
         }
 }
+// "^([\\(][a-z][']?([\\+][a-z][']?)*[\\)](\\*[\\(][a-z][']?([\\+][a-z][']?)+[\\)]))"
 
 bool Pos(string expression) {
-	if (!regex_match(expression, regex("^([\\(][a-z][']?([\\+][a-z][']?)*[\\)](\\*[\\(][a-z][']?([\\+][a-z][']?)+[\\)]))"))) {			
+	if (!regex_match(expression, regex("\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\)(\\*\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\))*"))) {			
 			return false;
-        }				
+        }
+		return true;				
 }
 
 
@@ -68,6 +70,79 @@ ostream& operator<<(ostream& os,
         os << element << " ";
     }
     return os;
+}
+
+vector<string> findAndPrintUncommonChars(string str1, string str2)
+{
+    // to store the answer
+    string ans = "";
+    string my_ans = "";
+	string my_ans_2 = ""; 
+      // to handle the case of duplicates
+    vector<int> used(26, false);
+ 
+    // check first for str1
+    for (int i = 0; i < str1.size(); i++) {
+        // keeping a flag variable
+        bool found = false;
+ 
+        for (int j = 0; j < str2.size(); j++) {
+            // if found change the flag
+            // and break from loop
+            if (str1[i] == str2[j]) {
+                found = true;
+                break;
+            }
+        }
+ 
+        // if duplicate character not found
+        // then add it to ans
+        if (!found && !used[str1[i] - 'a']) {
+            used[str1[i] - 'a'] = true;
+            ans += str1[i];
+            my_ans += str1[i];
+			}
+    }
+ 
+    // now check for str2
+    for (int i = 0; i < str2.size(); i++) {
+        // keeping a flag variable
+        bool found = false;
+ 
+        for (int j = 0; j < str1.size(); j++) {
+            // if found change the flag
+            // and break from loop
+            if (str2[i] == str1[j]) {
+                found = true;
+                break;
+            }
+        }
+ 
+        // if duplicate character not found
+        // then add it to ans
+        if (!found and !used[str2[i] - 'a']) {
+            used[str2[i] - 'a'] = true;
+            ans += str2[i];
+            my_ans_2 += str2[i];
+        }
+    }
+ 
+    // to match with output
+    sort(ans.begin(), ans.end());
+ 
+      // if not found any character
+    if (ans.size() == 0)
+        cout << "-1";
+     
+      // else print the answer
+      else
+      {
+	  
+        vector <string> missing;
+        missing.push_back(my_ans);
+        missing.push_back(my_ans_2);
+        return missing; 
+	}	
 }
 
 vector<string> ToCanonicalSop(string &sopExpression) {
@@ -97,8 +172,24 @@ vector<string> ToCanonicalSop(string &sopExpression) {
 	
 }
 	product.push_back(pstorage);	
-	
-//	return product;			
+	string first_group;
+	string second_group;
+	vector<string> missing_vars;
+/*	for(int j = 0; j<iteration_number /* how to loop? ; j++) {
+		for(int r = 0; r< cntDistinct(product[r]) ; r++) {
+			first_group =	product[j];
+			second_group = product[j+1];
+			sort(first_group.begin(), first_group.end());
+			sort(second_group.begin(), second_group.end());
+			if(first_group.compare(second_group) != 0) {
+				missing_vars = findAndPrintUncommonChars(first_group, second_group);	
+				product[j] = product[j] + missing_vars[1];
+				product.insert(product.begin()+1, ???.begin(), ???.end());
+				product[j+1] = product[j+1] + missing_vars[0];
+			}
+		}
+	} */
+	return product;			
 																				// compare between strings, if contain different elements, add them to each string	
 																								
 }
@@ -129,7 +220,7 @@ for (auto& x : posExpression) {
         x = tolower(x); 
     } 
     
-  /*  if (validateBooleanExpression(sopExpression)) {
+    if (validateBooleanExpression(sopExpression)) {
     	if(Sop(sopExpression)) {
         cout << "'" << sopExpression << "' is a valid SoP expression." << endl;
     } else {
@@ -145,12 +236,15 @@ for (auto& x : posExpression) {
         cout << "'" << posExpression << "' is not a valid PoS expression." << endl;
     } 
 }
-	else 	cout << "Invalid Format" << endl; */
+	else 	cout << "Invalid Format" << endl; 
 	
 	vector <string> v;
 	
-//	v = ToCanonicalSop(sopExpression);
+//ToCanonicalSop(sopExpression);
 //	cout << v;
+
+
+//findAndPrintUncommonChars(a, b);
 	
     return 0;
 }
