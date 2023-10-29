@@ -3,6 +3,7 @@
 #include <regex>
 #include <cmath>
 #include <vector>
+#include <set>
 #include <bits/stdc++.h>
 
 using namespace std; 
@@ -41,7 +42,7 @@ bool Sop(string expression) {
 			return false;
         }
 }
-// "^([\\(][a-z][']?([\\+][a-z][']?)*[\\)](\\*[\\(][a-z][']?([\\+][a-z][']?)+[\\)]))"
+
 
 bool Pos(string expression) {
 	if (!regex_match(expression, regex("\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\)(\\*\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\))*"))) {			
@@ -172,10 +173,10 @@ vector<string> ToCanonicalSop(string &sopExpression) {
 	
 }
 	product.push_back(pstorage);	
-	string first_group;
+/*	string first_group;
 	string second_group;
 	vector<string> missing_vars;
-/*	for(int j = 0; j<iteration_number /* how to loop? ; j++) {
+	for(int j = 0; j<iteration_number /* how to loop? ; j++) {
 		for(int r = 0; r< cntDistinct(product[r]) ; r++) {
 			first_group =	product[j];
 			second_group = product[j+1];
@@ -193,16 +194,53 @@ vector<string> ToCanonicalSop(string &sopExpression) {
 																				// compare between strings, if contain different elements, add them to each string	
 																								
 }
-								
+
+	
 
 void trutht(std::string sopExpression) {
-	int n = cntDistinct(sopExpression);		// number of variables
+	set<char> vars;	
+	int k = 0;
+	while(sopExpression[k] != '\0') {
+		if(sopExpression[k] != '+' && sopExpression[k] != '(' && sopExpression[k] != ')' && sopExpression[k] != '*' && sopExpression[k] != '\'') {
+				vars.insert(sopExpression[k]);
+				k++;
+		}
+		else
+		k++;
+	}
+	int n = vars.size();
+	set<int> :: iterator it;
 	int outputs = pow(2, n);				// number of outputs in truth table
+	int rows = outputs;
+	int columns = n;
+	for (auto it = vars.begin(); it!=vars.end();it++)
+    {
+        cout<<*it << "\t";							// display variables 
+    }
+	cout << "Output" << endl;
+
+	vector<vector<int>> output(n, vector<int>(1 << n));
+
+    unsigned num_to_fill = 1U << (n - 1);
+    for(unsigned col = 0; col < n; ++col, num_to_fill >>= 1U)
+    {
+        for(unsigned row = num_to_fill; row < (1U << n); row += (num_to_fill * 2))
+        {
+            std::fill_n(&output[col][row], num_to_fill, 1);
+        }
+    }
+    for(unsigned x = 0; x < (1 << n); ++x)
+    {
+        for(unsigned y = 0; y < n; ++y)
+        {
+            cout << output[y][x] << "\t";
+        }
+        cout << endl;
+    }
 	
-	return;
-	// make all sop's 1 and everything else 0 
-	
+	return;	
 } 
+
 
 int main() {
    string sopExpression;
@@ -243,8 +281,12 @@ for (auto& x : posExpression) {
 //ToCanonicalSop(sopExpression);
 //	cout << v;
 
+trutht(sopExpression);
 
-//findAndPrintUncommonChars(a, b);
+ const unsigned n = 10;
+    
+//v = findAndPrintUncommonChars(a, b);
+//cout << v;
 	
     return 0;
 }
