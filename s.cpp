@@ -51,17 +51,6 @@ bool Pos(string expression) {
 		return true;				
 }
 
-
-int cntDistinct(string str)
-{
-    unordered_set<char> s;  
-    for (int i = 0; i < str.size(); i++) {
-        s.insert(str[i]);
-    }
-
-    return s.size();
-}
-
 ostream& operator<<(ostream& os,
                     const vector<string>& vector)
 {
@@ -72,129 +61,6 @@ ostream& operator<<(ostream& os,
     }
     return os;
 }
-
-vector<string> findAndPrintUncommonChars(string str1, string str2)
-{
-    // to store the answer
-    string ans = "";
-    string my_ans = "";
-	string my_ans_2 = ""; 
-      // to handle the case of duplicates
-    vector<int> used(26, false);
- 
-    // check first for str1
-    for (int i = 0; i < str1.size(); i++) {
-        // keeping a flag variable
-        bool found = false;
- 
-        for (int j = 0; j < str2.size(); j++) {
-            // if found change the flag
-            // and break from loop
-            if (str1[i] == str2[j]) {
-                found = true;
-                break;
-            }
-        }
- 
-        // if duplicate character not found
-        // then add it to ans
-        if (!found && !used[str1[i] - 'a']) {
-            used[str1[i] - 'a'] = true;
-            ans += str1[i];
-            my_ans += str1[i];
-			}
-    }
- 
-    // now check for str2
-    for (int i = 0; i < str2.size(); i++) {
-        // keeping a flag variable
-        bool found = false;
- 
-        for (int j = 0; j < str1.size(); j++) {
-            // if found change the flag
-            // and break from loop
-            if (str2[i] == str1[j]) {
-                found = true;
-                break;
-            }
-        }
- 
-        // if duplicate character not found
-        // then add it to ans
-        if (!found and !used[str2[i] - 'a']) {
-            used[str2[i] - 'a'] = true;
-            ans += str2[i];
-            my_ans_2 += str2[i];
-        }
-    }
- 
-    // to match with output
-    sort(ans.begin(), ans.end());
- 
-      // if not found any character
-    if (ans.size() == 0)
-        cout << "-1";
-     
-      // else print the answer
-      else
-      {
-	  
-        vector <string> missing;
-        missing.push_back(my_ans);
-        missing.push_back(my_ans_2);
-        return missing; 
-	}	
-}
-
-vector<string> ToCanonicalSop(string &sopExpression) {
-	vector <string> product; 
-	int k, i = 0;
-	char c;
-	string pstorage = "";
-	int iteration_number = count(sopExpression.begin(), sopExpression.end(), '+') + 1;
-
-		for (string::iterator it=sopExpression.begin(); it!=sopExpression.end(); ++it)
-		 {
-		 	if(sopExpression.at(k) != '+') {		
-			 	if(sopExpression.at(k) == '\'')	{
-			 		k++;
-			}
-				else {
-				pstorage += sopExpression.at(k);	   // store each product in string (separated by +)
-					k++; 
-				}
-			}
-			else {
-			k++;
-			i++;
-			product.push_back(pstorage);
-			pstorage = "";														// try to match elements in string, if they don't match add missing variables
-	}
-	
-}
-	product.push_back(pstorage);	
-/*	string first_group;
-	string second_group;
-	vector<string> missing_vars;
-	for(int j = 0; j<iteration_number /* how to loop? ; j++) {
-		for(int r = 0; r< cntDistinct(product[r]) ; r++) {
-			first_group =	product[j];
-			second_group = product[j+1];
-			sort(first_group.begin(), first_group.end());
-			sort(second_group.begin(), second_group.end());
-			if(first_group.compare(second_group) != 0) {
-				missing_vars = findAndPrintUncommonChars(first_group, second_group);	
-				product[j] = product[j] + missing_vars[1];
-				product.insert(product.begin()+1, ???.begin(), ???.end());
-				product[j+1] = product[j+1] + missing_vars[0];
-			}
-		}
-	} */
-	return product;			
-																				// compare between strings, if contain different elements, add them to each string	
-																								
-}
-
 	
 
 void trutht(std::string sopExpression) {
@@ -276,17 +142,8 @@ for (auto& x : posExpression) {
 }
 	else 	cout << "Invalid Format" << endl; 
 	
-	vector <string> v;
-	
-//ToCanonicalSop(sopExpression);
-//	cout << v;
-
 trutht(sopExpression);
 
- const unsigned n = 10;
-    
-//v = findAndPrintUncommonChars(a, b);
-//cout << v;
 	
     return 0;
 }
