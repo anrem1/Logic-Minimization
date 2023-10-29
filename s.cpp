@@ -61,6 +61,60 @@ ostream& operator<<(ostream& os,
     return os;
 }
 	
+	vector<string> Products(string &sopExpression) {
+	vector <string> product; 
+	int k, i = 0;
+	string pstorage = "";
+	int iteration_number = count(sopExpression.begin(), sopExpression.end(), '+') + 1;
+
+		for (string::iterator it=sopExpression.begin(); it!=sopExpression.end(); ++it)
+		 {
+		 	if(sopExpression.at(k) != '+') {		
+				pstorage += sopExpression.at(k);	   // store each product in string (separated by +)
+					k++; 
+				
+			}
+			else {
+			k++;
+			i++;
+			product.push_back(pstorage);
+			pstorage = "";													
+	}
+	
+}
+product.push_back(pstorage);	
+		return product;		
+}
+
+vector<string> Sums(string &posExpression) {
+	vector <string> sum; 
+	int k, i = 0;
+	string sstorage = "";
+	int iteration_number = count(posExpression.begin(), posExpression.end(), '+') + 1;
+
+		for (string::iterator it=posExpression.begin(); it!=posExpression.end(); ++it)
+		 {
+		 	if(posExpression.at(k) != '*') {		
+			 	if(posExpression.at(k) == '(' || posExpression.at(k) == ')')	{
+			 		k++;
+			}
+				else {
+				sstorage += posExpression.at(k);	   // store each sum in string (separated by +)
+					k++; 
+				}
+			}
+			else {
+			k++;
+			i++;
+			sum.push_back(sstorage);
+			sstorage = "";														
+	}
+	
+}
+	sum.push_back(sstorage);	
+		return sum;			
+}
+
 
 void trutht(std::string expression) {
 	set<char> vars;	
@@ -142,8 +196,15 @@ for (auto& x : posExpression) {
 	else 	cout << "Invalid Format" << endl; 
 	
 trutht(sopExpression);
+cout << endl;
 trutht(posExpression);
 
+vector<string> v; 
+vector<string> a;
+v = Sums(posExpression);
+cout << v;
+a= Products(sopExpression);
+cout << a;
 	
     return 0;
 }
