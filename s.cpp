@@ -4,7 +4,6 @@
 #include <cmath>
 #include <vector>
 #include <set>
-#include <bits/stdc++.h>
 
 using namespace std; 
 
@@ -63,12 +62,12 @@ ostream& operator<<(ostream& os,
 }
 	
 
-void trutht(std::string sopExpression) {
+void trutht(std::string expression) {
 	set<char> vars;	
 	int k = 0;
-	while(sopExpression[k] != '\0') {
-		if(sopExpression[k] != '+' && sopExpression[k] != '(' && sopExpression[k] != ')' && sopExpression[k] != '*' && sopExpression[k] != '\'') {
-				vars.insert(sopExpression[k]);
+	while(expression[k] != '\0') {
+		if(expression[k] != '+' && expression[k] != '(' && expression[k] != ')' && expression[k] != '*' && expression[k] != '\'') {
+				vars.insert(expression[k]);												// put variables only once in set  
 				k++;
 		}
 		else
@@ -87,7 +86,7 @@ void trutht(std::string sopExpression) {
 
 	vector<vector<int>> output(n, vector<int>(1 << n));
 
-    unsigned num_to_fill = 1U << (n - 1);
+    unsigned num_to_fill = 1U << (n - 1);									// fill truth table 
     for(unsigned col = 0; col < n; ++col, num_to_fill >>= 1U)
     {
         for(unsigned row = num_to_fill; row < (1U << n); row += (num_to_fill * 2))
@@ -143,6 +142,7 @@ for (auto& x : posExpression) {
 	else 	cout << "Invalid Format" << endl; 
 	
 trutht(sopExpression);
+trutht(posExpression);
 
 	
     return 0;
