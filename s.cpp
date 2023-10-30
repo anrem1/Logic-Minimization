@@ -30,28 +30,24 @@ bool validateBooleanExpression(const string& expression) {
     // Check for valid operator usage
     if (expression.find("**") != string::npos || expression.find("++") != string::npos) {		// add +* or *+  or var * or * var or +var+ or aa etc.
         return false;
-    }
-
-    																				
+    }  																				
     return true;
 } 
 
-bool Sop(string expression) {
-	if (!regex_match(expression, regex("^[a-z'\\s+]+"))) {		// ab+cd      			// should not accept '' , should not end in +
-			return false;
-        }
+bool Sop(string expression) {																			// should not accept '' , should not end in +
+        return (regex_match(expression, regex("^[a-z'\\s+]+")));
 }
 
 
 bool Pos(string expression) {
-	if (!regex_match(expression, regex("\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\)(\\*\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\))*"))) {			
+	return(regex_match(expression, regex("\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\)(\\*\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\))*")));
+	/*	if (!regex_match(expression, regex("\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\)(\\*\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\))*"))) {			
 			return false;
         }
-		return true;				
+		return true; */				
 }
 
-ostream& operator<<(ostream& os,
-                    const vector<string>& vector)
+ostream& operator<<(ostream& os, const vector<string>& vector)
 {
     // Printing all the elements
     // using <<
@@ -115,6 +111,21 @@ vector<string> Sums(string &posExpression) {
 		return sum;			
 }
 
+/*void bool_func::set_canonical_sop() {
+
+    sop.reserve(minterms.size());
+
+    char product[11];
+    int len;
+    for (auto u : minterms) {
+        len = 0;
+        for (int i = 0; i < get_var_count(); ++i) {
+            product[len++] = char(i + ((u & (1 << i)) ? 'a' : 'A'));
+        }
+        product[len] = 0;
+        sop.emplace_back(product);
+    }
+} */
 
 void trutht(std::string expression) {
 	set<char> vars;	
@@ -132,44 +143,77 @@ void trutht(std::string expression) {
 	int outputs = pow(2, n);				// number of outputs in truth table
 	int rows = outputs;
 	int columns = n;
+
+	vector<char> row1;
+	char c;
+
 	for (auto it = vars.begin(); it!=vars.end();it++)
-    {
-        cout<<*it << "\t";							// display variables 
+    {						
+        c = *it;
+        row1.push_back(c);							// store variables into first row
     }
-	cout << "Output" << endl;
-
-	vector<vector<int>> output(n, vector<int>(1 << n));
-
+ 
+   
+	vector<char> col(outputs+1, '0');								// column for output
+	col[0] = 'Y';
+																	
+	vector<vector<char>> output(n, vector<char>(1 << n));
+		
     unsigned num_to_fill = 1U << (n - 1);									// fill truth table 
     for(unsigned col = 0; col < n; ++col, num_to_fill >>= 1U)
     {
         for(unsigned row = num_to_fill; row < (1U << n); row += (num_to_fill * 2))
         {
-            std::fill_n(&output[col][row], num_to_fill, 1);
+            fill_n(&output[col][row], num_to_fill, '1');						// *** fix: put 0 
         }
-    }
-    for(unsigned x = 0; x < (1 << n); ++x)
+    }																			// add another loop that puts 0 into table when it's not ==1 (before adding extra row & colum)
+ /*   for(unsigned x = 0; x < (1 << n); ++x)
     {
         for(unsigned y = 0; y < n; ++y)
         {
-            cout << output[y][x] << "\t";
+            cout << output[y][x] << "\t";						// display truth table (without extra row & column)
         }
         cout << endl;
+    } */
+    
+   
+ //	  output.insert(output.begin(), row1);
+ 
+   
+   for(auto &r : output) 
+{
+    for(const auto &co : row1)						// ** fix this so that it inserts a row in the beginning of truth table
+    {
+        r.push_back(co);
     }
-	
+}
+	   for(int j = 0; j<(n+1); j++) {
+   		output[j][0] = row1[j];
+	   } 
+	   
+	output.push_back(col);								// append output column
+
+ 														
+    cout << endl;
+    for (unsigned x = 0; x < ((1 << n)+1); ++x) { 
+        for (unsigned y = 0; y<(n+1); ++y) {
+     	cout << output[y][x] << "\t";
+    }
+    cout << endl;								
+    } 
+    	
 	return;	
 } 
 
 
 int main() {
    string sopExpression;
-   cin >> sopExpression;
+   cin >> sopExpression;					
    string posExpression;
 
-	getline(std::cin, posExpression);
-	getline(std::cin, posExpression);
+//	getline(std::cin, posExpression);				// can make this cin if you specify in the beginning user can't add spaces
+//	getline(std::cin, posExpression);
 
-	
 for (auto& x : sopExpression) { 
         x = tolower(x); 
     } 
@@ -186,25 +230,19 @@ for (auto& x : posExpression) {
 }
 	else cout << "Invalid Format" << endl;
 
-    if (validateBooleanExpression(posExpression)) { 
+  /*  if (validateBooleanExpression(posExpression)) { 
     	if(Pos(posExpression)) {
         cout << "'" << posExpression << "' is a valid PoS expression." << endl;
     }   else {
         cout << "'" << posExpression << "' is not a valid PoS expression." << endl;
     } 
 }
-	else 	cout << "Invalid Format" << endl; 
+	else 	cout << "Invalid Format" << endl;  */
 	
 trutht(sopExpression);
 cout << endl;
-trutht(posExpression);
+//trutht(posExpression);
 
-vector<string> v; 
-vector<string> a;
-v = Sums(posExpression);
-cout << v;
-a= Products(sopExpression);
-cout << a;
 	
     return 0;
 }
