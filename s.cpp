@@ -149,53 +149,30 @@ void trutht(std::string expression) {
 
 	for (auto it = vars.begin(); it!=vars.end();it++)
     {						
-        c = *it;
+       cout << *it << "\t";
+	    c = *it;
         row1.push_back(c);							// store variables into first row
     }
  
-   
-	vector<char> col(outputs+1, '0');								// column for output
-	col[0] = 'Y';
-																	
-	vector<vector<char>> output(n, vector<char>(1 << n));
+	vector<int> col(outputs, 0);								// column for output
+	cout << 'Y';
+																				
+	vector<vector<int>> output(n, vector<int>(1 << n));
 		
     unsigned num_to_fill = 1U << (n - 1);									// fill truth table 
     for(unsigned col = 0; col < n; ++col, num_to_fill >>= 1U)
     {
         for(unsigned row = num_to_fill; row < (1U << n); row += (num_to_fill * 2))
         {
-            fill_n(&output[col][row], num_to_fill, '1');						// *** fix: put 0 
+            fill_n(&output[col][row], num_to_fill, 1);						// *** fix: put 0 
         }
     }																			// add another loop that puts 0 into table when it's not ==1 (before adding extra row & colum)
- /*   for(unsigned x = 0; x < (1 << n); ++x)
-    {
-        for(unsigned y = 0; y < n; ++y)
-        {
-            cout << output[y][x] << "\t";						// display truth table (without extra row & column)
-        }
-        cout << endl;
-    } */
-    
-   
- //	  output.insert(output.begin(), row1);
- 
-   
-   for(auto &r : output) 
-{
-    for(const auto &co : row1)						// ** fix this so that it inserts a row in the beginning of truth table
-    {
-        r.push_back(co);
-    }
-}
-	   for(int j = 0; j<(n+1); j++) {
-   		output[j][0] = row1[j];
-	   } 
 	   
 	output.push_back(col);								// append output column
 
  														
     cout << endl;
-    for (unsigned x = 0; x < ((1 << n)+1); ++x) { 
+    for (unsigned x = 0; x < (1 << n); ++x) { 
         for (unsigned y = 0; y<(n+1); ++y) {
      	cout << output[y][x] << "\t";
     }
