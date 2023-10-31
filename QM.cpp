@@ -394,6 +394,15 @@ vector<string> getEssentialPrimes(const vector<vector<string>>& coverChart) {
     return essentialPrimes;
 }
 
+// Function to check if a prime implicant covers a minterm
+bool covers2(const string& minterm, const string& prime_implicant) {
+    for ( int i = 0; i < minterm.size(); i++) {
+        if (minterm[i] != '-' && minterm[i] != prime_implicant[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
 // Function to print minterms not covered by essential PIs
 void print_uncovered_minterms(
@@ -420,21 +429,27 @@ void print_uncovered_minterms(
     }
 }
 
-int main() {
-
-
-	cout << "You must enter * in pos/sop form when getting the product. \nAlways add parentheses in pos form, like so (a+b)*(c+d) and write sop like ab+cd. \nCapital letters will be converted to lowercase letters." << endl;
-	int numVariables;
-	cout << "enter # of vars" << endl;
-	string expression;
-
+void run(string expression) {
 	
-    cout << "Enter the number of variables: ";
-    cin >> numVariables;
-    cin.ignore();  // Clear the newline character from the buffer
-
-    cout << "Enter the Boolean expression in SOP or POS form: ";
-	getline(cin, expression);
+   // cout << "Enter the number of variables: ";
+//    cin >> numVariables;
+ //   cin.ignore();  // Clear the newline character from the buffer
+	
+	
+	set<char> vars;	
+	int k = 0;
+	while(expression[k] != '\0') {
+		if(expression[k] != '+' && expression[k] != '(' && expression[k] != ')' && expression[k] != '*' && expression[k] != '\'') {
+				vars.insert(expression[k]);												// put variables only once in set  
+				k++;
+		}
+		else
+		k++;
+	}
+	int numVariables = vars.size();
+	
+ //   cout << "Enter the Boolean expression in SOP or POS form: ";
+//	getline(cin, expression);
 	
 	for (auto& x : expression) { 
 	        x = tolower(x); 
@@ -470,7 +485,6 @@ int main() {
     cout << "Canonical SOP Form: " << canonicalSOP << endl;
     cout << "Canonical POS Form: " << canonicalPOS << endl;
 
-}
 
 std::vector<std::string> minterms = get_minterms(generateTruthTable(expression, numVariables));
 
@@ -514,6 +528,21 @@ std::cout << "Maxterms: ";
     }
     
     print_uncovered_minterms(essential_primes, minterms);
+}
+}
+
+int main() {
+
+	string test_case[10] = {"a*b", "a+b", "a*b+c", "a*b*c*d*e", "a+bc", "(ab+c)", "a'+b" "a++b", "(a+b", "a+b*c+d*e+f"};
+	
+	for(int i = 0; i<10; i++) {
+		run(test_case[i]);
+		cout << endl; 
+		cout << endl;
+		cout << endl;
+	}
+	
+
     
     return 0;
 }
