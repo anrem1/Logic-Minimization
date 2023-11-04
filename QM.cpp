@@ -533,7 +533,7 @@ std::cout << "Maxterms: ";
 
 int main() {
 
-	string test_case[10] = {"a*b", "a+b", "a*b+c", "a*b*c*d*e", "a+bc", "(ab+c)", "a'+b", "a++b", "(a+b", "a+b*c+d*e+f"};
+	string test_case[10] = {"a*b", "a+b", "a*b+c", "a*b*c*d*e", "a+b*c", "(ab+c)", "a'+b", "a++b", "(a+b", "a+b*c+d*e+f"};
 	
 	for(int i = 0; i<10; i++) {
 		run(test_case[i]);
