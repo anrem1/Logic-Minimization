@@ -37,7 +37,7 @@ bool validateBooleanExpression(const string& expression) {
 } 
 
 bool Sop(string expression) {																			// should not accept '' , should not end in +
-        return (regex_match(expression, regex("^[a-z'\\s+]+")));
+        return (regex_match(expression, regex("^[a-z'*\\s+]+")));
 }
 
 
