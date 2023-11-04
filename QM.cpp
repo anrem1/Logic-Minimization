@@ -37,12 +37,12 @@ bool validateBooleanExpression(const string& expression) {
 } 
 
 bool Sop(string expression) {																			// should not accept '' , should not end in +
-        return (regex_match(expression, regex("^[a-z'*\\s+]+")));
+        return (regex_match(expression, regex("^[a-z'*\\s+]+")) &&  !expression.empty() && !(expression.back() == '+'));
 }
 
 
 bool Pos(string expression) {
-	return(regex_match(expression, regex("\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\)(\\*\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\))*")));			
+	return(regex_match(expression, regex("\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\)(\\*\\([a-z]{1}[']?(\\+[a-z]{1}[']?)*\\))*")) &&  !expression.empty() && !(expression.back() == '*'));			
 }
 
 ostream& operator<<(ostream& os,
@@ -533,7 +533,7 @@ std::cout << "Maxterms: ";
 
 int main() {
 
-	string test_case[10] = {"a*b", "a+b", "a*b+c", "a*b*c*d*e", "a+b*c", "(ab+c)", "a'+b", "a++b", "(a+b", "a+b*c+d*e+f"};
+	string test_case[10] = {"a*b", "a+b", "a*b+c", "a*b*c*d*e", "a+bc", "(ab+c)", "a'+b" "a++b", "(a+b", "a+b*c+d*e+f"};
 	
 	for(int i = 0; i<10; i++) {
 		run(test_case[i]);
